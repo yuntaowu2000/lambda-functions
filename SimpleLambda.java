@@ -37,21 +37,28 @@ public class SimpleLambda {
         // now some built in lambda's for list
 
         List<Integer> myList = Arrays.asList(5, 6, 7, -1, 3, 8, 4, 10, 2, 1);
+        List<Integer> resultList = new ArrayList<Integer>();
 
         myList.stream()
         .filter(x -> x > 2) // keep if the value is greater than 2
         .sorted((x, y) -> x - y) // for any two values x, y in the list, place x in front of y if x - y < 0
         .map(x -> doubleFunction.apply(x)) // for all values in the sorted list, apply the double function
-        .forEach(x -> System.out.println(x)); // print out every single elements of the doubled values in the stream
+        .forEach(x -> {
+            // we can do multiple stuff inside one lambda function
+            // print out every single elements of the doubled values in the stream and add them to a new list
+            System.out.println(x);
+            resultList.add(x);
+        }); 
         // note that foreach is a terminal operation, we cannot modify anything on the stream after this
+        System.out.println("result list: " + resultList.toString());
         
-        // if you want the result to be kept in a new list
-        List<Integer> result = myList.stream()
+        // another way if you want the result to be kept in a new list using collect function
+        List<Integer> collectResult = myList.stream()
         .filter(x -> x > 2)
         .sorted((x, y) -> x - y)
         .map(x -> doubleFunction.apply(x))
         .collect(Collectors.toList());
 
-        System.out.println(result);
+        System.out.println("collect result: " + collectResult.toString());
     }
 }
